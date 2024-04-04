@@ -7,17 +7,22 @@ import { EditorSubmenu } from "./EditorSubmenu";
 
 
 export function EditorLayout  ({ children })  {
+  // estado para controlar el menú en mobile
+  const [isOpen, setIsOpen] = useState(false);
   // Estado para controlar qué submenú está abierto
-  const [activeMenu, setActiveMenu] = useState(null);
+  const [activeSubMenu, setActiveSubMenu] = useState(null);
 
-  // Función para manejar el clic en un botón
+  // Función para manejar el clic en un botón del sub menu
   const handleButtonClick = (buttonIndex) => {
-    setActiveMenu(buttonIndex);
+    setActiveSubMenu(buttonIndex);
   };
-
   // Función para cerrar el submenú
   const closeMenu = () => {
-    setActiveMenu(null);
+    setActiveSubMenu(null);
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   // Lista de botones
@@ -28,9 +33,17 @@ export function EditorLayout  ({ children })  {
 
   return (
     <>
-      <div className="relative flex md:h-screen">
-        <div className="w-60 xl:static relative bg-white">
-          <h2>Listado de Botones</h2>
+      <div className="relative md:flex md:h-screen">
+        {/* Botón de toggle */}
+        <div className={`
+          xl:static md:relative fixed md:w-60 w-full bg-white mobile-panel  bottom-0 left-0 p-4 
+          transition-transform duration-300 ease-in-out 
+          ${isOpen ? 'msm:translate-y-0' : 'msm:translate-y-28'}
+        `}>
+            {/* transform${isOpen ? 'translate-y-0' : 'translate-y-full'} */}
+          <span className="md:hidden px-4 py-2 rounded" onClick={toggleMenu}>
+            {isOpen ? 'Cerrar' : 'Abrir'}
+          </span>
             {/* Renderizar los botones */}
             {buttons.map((button, index) => (
               <div key={index}>
@@ -38,7 +51,7 @@ export function EditorLayout  ({ children })  {
                   onClick={() => handleButtonClick(index)}
                 >{button.label}</button>
                 {/* Mostrar el submenú si el botón está activo */}
-                {activeMenu === index && (
+                {activeSubMenu === index && (
                   <EditorSubmenu info={button.info} onClose={closeMenu} />
                 )}
               </div>

@@ -4,7 +4,7 @@ export function EditorSubmenu ({info, onClose}) {
 
   return (
     <> 
-      <div className="absolute right-0 top-0 bg-white md:h-screen md:w-60">
+      <div className="absolute right-0 top-0 bg-white md:h-screen md:w-60 w-full h-screen">
           {/* Botón para cerrar el submenú */}
           <button className='xl:hidden' label="Cerrar" onClick={onClose} >cerrar</button>
           {/* Mostrar la información del botón */}
