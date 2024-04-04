@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import {Box, Page,Layout, LegacyCard} from '@shopify/polaris';
-
+import {Page, Divider, Text, BlockStack} from '@shopify/polaris';
 
 import { EditorSubmenu } from "./EditorSubmenu";
-
-
 
 export function EditorLayout  ({ children })  {
   // estado para controlar el menú en mobile
@@ -25,10 +22,26 @@ export function EditorLayout  ({ children })  {
     setIsOpen(!isOpen);
   };
 
-  // Lista de botones
-  const buttons = [
-    { label: 'Botón 1', info: 'Información del botón 1' },
-    { label: 'Botón 2', info: 'Información del botón 2' },
+  const schemaElements = [
+    { 
+      label: 'Heading', 
+      info: 'Heading', 
+      options: [
+        { optionLabel: 'Texto del Titular',optionType: 'textEditor', defaultValue: 'Hola Mundo' },
+        { optionLabel: 'Texto del subtitulo',optionType: 'textEditor', defaultValue: 'Bienvenido a mi prueba de shopify Headless' },
+        { optionLabel: 'Css Personalizado',optionType: 'textMultiline', defaultValue: '' }
+      ] 
+    },
+    { 
+      label: 'Botones', 
+      info: 'Botones', 
+      options: [
+        { optionLabel: 'Texto del botón',optionType: 'textEditor', defaultValue: 'Texto por defecto' },
+        { optionLabel: 'Enlace del botón',optionType: 'textEditor', defaultValue: 'https://www.google.com/' },
+        { optionLabel: 'Usar estilo outline en el botón',optionType: 'checkbox', defaultValue: false },
+        { optionLabel: 'Css personalizado',optionType: 'textMultiline', defaultValue: '' }
+      ]
+    },
   ];
 
   return (
@@ -41,23 +54,33 @@ export function EditorLayout  ({ children })  {
           ${isOpen ? 'msm:translate-y-0' : 'msm:translate-y-28'}
         `}>
             {/* transform${isOpen ? 'translate-y-0' : 'translate-y-full'} */}
-          <span className="md:hidden px-4 py-2 rounded" onClick={toggleMenu}>
-            {isOpen ? 'Cerrar' : 'Abrir'}
-          </span>
-            {/* Renderizar los botones */}
-            {buttons.map((button, index) => (
-              <div key={index}>
-                <button
-                  onClick={() => handleButtonClick(index)}
-                >{button.label}</button>
-                {/* Mostrar el submenú si el botón está activo */}
-                {activeSubMenu === index && (
-                  <EditorSubmenu info={button.info} onClose={closeMenu} />
-                )}
-              </div>
-            ))}
+            <span className="md:hidden px-4 py-2 rounded" onClick={toggleMenu}>
+              {isOpen ? 'Cerrar' : 'Abrir'}
+            </span>
+            
+            <BlockStack gap="500">
+              <Text as="h1" variant="headingSm">
+                Editor
+              </Text>
+              <Divider borderColor="border-inverse" />
+              {schemaElements.map((schemaElement, index) => (
+                <div key={index}>
+                  <span className="cursor-pointer text-right" onClick={() => handleButtonClick(index)} >
+                    <Text as="h3" variant="headingSm" >
+                      {schemaElement.label}
+                    </Text>
+                  </span>
+                  {/* Mostrar el submenú si el botón está activo */}
+                  {activeSubMenu === index && (
+                    <EditorSubmenu info={schemaElement.info} options={schemaElement.options} onClose={closeMenu} />
+                  )}
+                </div>
+              ))}
+              
+
+            </BlockStack>
         </div>
-        <div className=" lg:mr-80">
+        <div className="lg:mr-80">
           <Page>
             {children}
           </Page>
