@@ -12,9 +12,7 @@ function App() {
 
   return (
     <>
-      <EditorLayout>
-        <PagePreview/>
-      </EditorLayout>
+      <EditorLayout />
     </>
   )
 }
